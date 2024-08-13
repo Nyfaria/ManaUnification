@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "examplemod:hundred_media"
+          "name": "manaunification:hundred_media"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "examplemod:blocks/hundred_media"
+  "random_sequence": "manaunification:blocks/hundred_media"
 }

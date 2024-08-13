@@ -6,6 +6,7 @@ plugins {
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'org.spongepowered.mixin' version '0.7.+'
     id 'dev._100media.gradleutils' version '1.+'
+    id "me.modmuss50.mod-publish-plugin" version "0.5.1"
 }
 
 version = "${minecraft_version}-${mod_version}"
@@ -147,11 +148,24 @@ dependencies {
     datagenImplementation sourceSets.main.output
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
+    implementation("io.github.llamalad7:mixinextras-forge:0.4.1")
+    jarJar("io.github.llamalad7:mixinextras-forge:0.4.1") {
+        jarJar.ranged(it, "[0.4.1,)")
+    }
+
     // Capability Syncer
     hundredMedia.addJarJarDep('dev._100media.capabilitysyncer:capabilitysyncer', capabilitysyncer_version, capabilitysyncer_version_range)
 
     // Suggestion Provider Fix
     runtimeOnly fg.deobf("com.harleyoconnor.suggestionproviderfix:SuggestionProviderFix-${minecraft_version}:${suggestion_provider_fix_version}")
+    implementation fg.deobf("curse.maven:irons-spells-n-spellbooks-855414:5447651")
+    implementation fg.deobf("curse.maven:caelus-308989:5281700")
+    implementation fg.deobf("curse.maven:curios-309927:5367944")
+    implementation fg.deobf("curse.maven:playeranimator-658587:4587214")
+    implementation fg.deobf("curse.maven:geckolib-388172:5460309")
+    implementation fg.deobf("curse.maven:jei-238222:5621194")
+    implementation fg.deobf("curse.maven:ars-nouveau-401955:5436131")
 }
 
 tasks.withType(ProcessResources).configureEach {
@@ -225,3 +239,31 @@ publishing {
         }
     }
 }
+
+publishMods {
+    file = jar.archiveFile
+    changelog = file("changelog.md").text
+    type = STABLE
+    modLoaders.add("neoforge")
+    modLoaders.add("forge")
+    displayName = "${mod_name}-${minecraft_version}-[NeoForge]-${project.version}"
+    dryRun = dry_run.toBoolean()
+    if (curseforge_publishing_enabled.toBoolean()) {
+        curseforge {
+            projectId = curseforge_project_id
+            accessToken = curseforge_token
+            minecraftVersions.add(minecraft_version)
+            clientRequired = true
+            serverRequired = true
+            javaVersions.add(JavaVersion.VERSION_17)
+        }
+    }
+    if (modrinth_publishing_enabled.toBoolean()) {
+        modrinth {
+            accessToken = modrinth_token
+            projectId = modrinth_project_id
+            minecraftVersions.add(minecraft_version)
+        }
+    }
+}
+
