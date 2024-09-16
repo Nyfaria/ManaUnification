@@ -245,7 +245,7 @@ publishing {
 
 publishMods {
     file = tasks.jarJar.archiveFile
-    changelog = file("changelog.md").text
+    changelog = file("new_changelog.md").text
     type = STABLE
     modLoaders.add("neoforge")
     modLoaders.add("forge")
