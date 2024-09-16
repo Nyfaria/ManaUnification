@@ -19,3 +19,9 @@ mandatory=true
 versionRange="${minecraft_version_range}"
 ordering="NONE"
 side="BOTH"
+[[dependencies.${mod_id}]]
+modId="irons_spellbooks"
+mandatory=false
+versionRange="*"
+ordering="AFTER"
+side="BOTH"

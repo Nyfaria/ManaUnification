@@ -3,11 +3,20 @@
   "package": "com.nyfaria.manaunification.mixin",
   "compatibilityLevel": "JAVA_17",
   "refmap": "${mod_id}.refmap.json",
+  "plugin": "com.nyfaria.manaunification.MixinConfigPlugin",
   "mixins": [
     "AbstractSpellMixin",
+    "AttributeAffixMixin",
+    "AttributeBonusMixin",
+    "GemMixin",
     "ISSpellBookMixin",
-    "MagicDataMixin"
+    "MagicDataMixin",
+    "MagicManagerMixin",
+    "ModifierInstMixin",
+    "SimpleAttributeCurioMixin"
   ],
-  "client": [],
+  "client": [
+    "ManaBarOverlayMixin"
+  ],
   "minVersion": "0.8.5"
 }
