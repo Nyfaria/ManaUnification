@@ -1,10 +1,10 @@
 package com.nyfaria.manaunification.mixin;
 
-import com.hollingsworth.arsnouveau.api.mana.IManaCap;
-import com.hollingsworth.arsnouveau.setup.registry.CapabilityRegistry;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.nyfaria.manaunification.MagicDataPlayer;
+import com.nyfaria.manaunification.cap.ManaHolder;
+import com.nyfaria.manaunification.cap.ManaHolderAttacher;
 import io.redspace.ironsspellbooks.api.magic.MagicData;
 import net.minecraft.server.level.ServerPlayer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,9 +25,9 @@ public class MagicDataMixin implements MagicDataPlayer {
         if(getPlayer() == null) {
             return original.call();
         }
-        IManaCap blah = getPlayer().getCapability(CapabilityRegistry.MANA_CAPABILITY).orElse(null);
-        if (blah != null) {
-            return (float)blah.getCurrentMana();
+        ManaHolder holder = ManaHolderAttacher.getHolderUnwrap(getPlayer());
+        if (holder != null) {
+            return (float)holder.getCurrentMana();
         }
         return original.call();
     }
@@ -37,9 +37,9 @@ public class MagicDataMixin implements MagicDataPlayer {
             original.call(mana);
             return;
         }
-        IManaCap blah = getPlayer().getCapability(CapabilityRegistry.MANA_CAPABILITY).orElse(null);
-        if (blah != null) {
-            blah.setMana(mana);
+        ManaHolder holder = ManaHolderAttacher.getHolderUnwrap(getPlayer());
+        if (holder != null) {
+            holder.setCurrentMana(mana);
         }
         original.call(mana);
     }

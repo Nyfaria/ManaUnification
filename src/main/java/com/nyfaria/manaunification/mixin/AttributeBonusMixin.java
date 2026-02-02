@@ -1,15 +1,13 @@
 package com.nyfaria.manaunification.mixin;
 
-import com.hollingsworth.arsnouveau.api.perk.PerkAttributes;
-import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.nyfaria.manaunification.AttributeBonusDuck;
+import com.nyfaria.manaunification.cap.ManaAttributes;
 import dev.shadowsoffire.apotheosis.adventure.affix.socket.gem.bonus.AttributeBonus;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootRarity;
-import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -23,20 +21,22 @@ import java.util.function.BiConsumer;
 @Mixin(AttributeBonus.class)
 public class AttributeBonusMixin {
 
-    @Inject(method = "addModifiers", at=@At("HEAD"), remap = false)
-    public void addModifiers(ItemStack gem, LootRarity rarity, BiConsumer<Attribute, AttributeModifier> map, CallbackInfo ci) {
-        if (this.attribute == AttributeRegistry.MAX_MANA.get()) {
-            this.attribute = PerkAttributes.MAX_MANA.get();
-        }
-        if (this.attribute == AttributeRegistry.MANA_REGEN.get()) {
-            this.attribute = PerkAttributes.MANA_REGEN_BONUS.get();
-        }
-    }
-
     @Final
     @Shadow(remap = false)
     @Mutable
     protected Attribute attribute;
 
-
+    @Inject(method = "addModifiers", at=@At("HEAD"), remap = false)
+    public void addModifiers(ItemStack gem, LootRarity rarity, BiConsumer<Attribute, AttributeModifier> map, CallbackInfo ci) {
+        ResourceLocation attrId = ForgeRegistries.ATTRIBUTES.getKey(this.attribute);
+        if (attrId != null) {
+            String path = attrId.getPath();
+            if (path.contains("max_mana") || path.contains("flat_mana") || path.contains("perk.max_mana")) {
+                this.attribute = ManaAttributes.MAX_MANA.get();
+            }
+            if (path.contains("mana_regen") || path.contains("perk.mana_regen")) {
+                this.attribute = ManaAttributes.MANA_REGEN.get();
+            }
+        }
+    }
 }

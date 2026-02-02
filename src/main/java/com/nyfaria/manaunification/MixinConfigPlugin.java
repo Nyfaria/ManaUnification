@@ -14,13 +14,31 @@ import java.util.function.Supplier;
 public class MixinConfigPlugin implements IMixinConfigPlugin {
 
     private static final Supplier<Boolean> TRUE = () -> true;
+    private static final Supplier<Boolean> IRONS_SPELLS = () -> LoadingModList.get().getModFileById("irons_spellbooks") != null;
+    private static final Supplier<Boolean> ARS_NOUVEAU = () -> LoadingModList.get().getModFileById("ars_nouveau") != null;
+    private static final Supplier<Boolean> APOTHEOSIS = () -> LoadingModList.get().getModFileById("apotheosis") != null;
+    private static final Supplier<Boolean> EB_WIZARDRY = () -> LoadingModList.get().getModFileById("ebwizardry") != null;
+    private static final Supplier<Boolean> PUT_MANA_IN = () -> LoadingModList.get().getModFileById("put_mana_in") != null;
 
-    private static final Map<String, Supplier<Boolean>> CONDITIONS = ImmutableMap.of(
-            "com.nyfaria.manaunification.mixin.AttributeAffixMixin", () ->LoadingModList.get().getModFileById("irons_spellbooks") !=null && LoadingModList.get().getModFileById("apotheosis") != null,
-            "com.nyfaria.manaunification.mixin.GemMixin", () ->LoadingModList.get().getModFileById("irons_spellbooks") !=null && LoadingModList.get().getModFileById("apotheosis") != null,
-            "com.nyfaria.manaunification.mixin.ModifierInstMixin", () ->LoadingModList.get().getModFileById("irons_spellbooks") !=null && LoadingModList.get().getModFileById("apotheosis") != null
-
-    );
+    private static final Map<String, Supplier<Boolean>> CONDITIONS = ImmutableMap.<String, Supplier<Boolean>>builder()
+            .put("com.nyfaria.manaunification.mixin.AbstractSpellMixin", IRONS_SPELLS)
+            .put("com.nyfaria.manaunification.mixin.ISSpellBookMixin", IRONS_SPELLS)
+            .put("com.nyfaria.manaunification.mixin.MagicDataMixin", IRONS_SPELLS)
+            .put("com.nyfaria.manaunification.mixin.MagicManagerMixin", IRONS_SPELLS)
+            .put("com.nyfaria.manaunification.mixin.ManaBarOverlayMixin", IRONS_SPELLS)
+            .put("com.nyfaria.manaunification.mixin.AttributeAffixMixin", APOTHEOSIS)
+            .put("com.nyfaria.manaunification.mixin.AttributeBonusMixin", APOTHEOSIS)
+            .put("com.nyfaria.manaunification.mixin.GemMixin", APOTHEOSIS)
+            .put("com.nyfaria.manaunification.mixin.ModifierInstMixin", APOTHEOSIS)
+            .put("com.nyfaria.manaunification.mixin.ArsNouveauManaCapMixin", ARS_NOUVEAU)
+            .put("com.nyfaria.manaunification.mixin.ArsNouveauManaRegenMixin", ARS_NOUVEAU)
+            .put("com.nyfaria.manaunification.mixin.ArsNouveauManaHudMixin", ARS_NOUVEAU)
+            .put("com.nyfaria.manaunification.mixin.ArsNouveauManaUtilMixin", ARS_NOUVEAU)
+            .put("com.nyfaria.manaunification.mixin.ArsNouveauSpellResolverMixin", ARS_NOUVEAU)
+            .put("com.nyfaria.manaunification.mixin.ArsNouveauManaCapEventsMixin", ARS_NOUVEAU)
+            .put("com.nyfaria.manaunification.mixin.EBWizardryWandMixin", EB_WIZARDRY)
+            .put("com.nyfaria.manaunification.mixin.PutManaInMixin", PUT_MANA_IN)
+            .build();
 
 
     @Override

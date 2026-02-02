@@ -1,11 +1,12 @@
 package com.nyfaria.manaunification.mixin;
 
-import com.hollingsworth.arsnouveau.api.perk.PerkAttributes;
+import com.nyfaria.manaunification.cap.ManaAttributes;
 import dev.shadowsoffire.apotheosis.adventure.affix.AttributeAffix;
 import dev.shadowsoffire.placebo.util.StepFunction;
-import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -22,11 +23,15 @@ public class ModifierInstMixin {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(Attribute attra, AttributeModifier.Operation op, StepFunction valueFactory, CallbackInfo ci) {
-        if(attr == AttributeRegistry.MAX_MANA.get()){
-            attr = PerkAttributes.MAX_MANA.get();
-        }
-        if(attr == AttributeRegistry.MANA_REGEN.get()){
-            attr = PerkAttributes.MANA_REGEN_BONUS.get();
+        ResourceLocation attrId = ForgeRegistries.ATTRIBUTES.getKey(attr);
+        if (attrId != null) {
+            String path = attrId.getPath();
+            if (path.contains("max_mana") || path.contains("flat_mana") || path.contains("perk.max_mana")) {
+                attr = ManaAttributes.MAX_MANA.get();
+            }
+            if (path.contains("mana_regen") || path.contains("perk.mana_regen")) {
+                attr = ManaAttributes.MANA_REGEN.get();
+            }
         }
     }
 }

@@ -6,16 +6,23 @@
   "plugin": "com.nyfaria.manaunification.MixinConfigPlugin",
   "mixins": [
     "AbstractSpellMixin",
+    "ArsNouveauManaCapEventsMixin",
+    "ArsNouveauManaCapMixin",
+    "ArsNouveauManaRegenMixin",
+    "ArsNouveauManaUtilMixin",
+    "ArsNouveauSpellResolverMixin",
     "AttributeAffixMixin",
     "AttributeBonusMixin",
+    "EBWizardryWandMixin",
     "GemMixin",
     "ISSpellBookMixin",
     "MagicDataMixin",
     "MagicManagerMixin",
     "ModifierInstMixin",
-    "SimpleAttributeCurioMixin"
+    "PutManaInMixin"
   ],
   "client": [
+    "ArsNouveauManaHudMixin",
     "ManaBarOverlayMixin"
   ],
   "minVersion": "0.8.5"

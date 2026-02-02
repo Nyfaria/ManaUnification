@@ -1,7 +1,5 @@
 package com.nyfaria.manaunification.mixin;
 
-import com.hollingsworth.arsnouveau.api.mana.IManaCap;
-import com.hollingsworth.arsnouveau.setup.registry.CapabilityRegistry;
 import io.redspace.ironsspellbooks.api.magic.MagicData;
 import io.redspace.ironsspellbooks.capabilities.magic.MagicManager;
 import net.minecraft.server.level.ServerPlayer;

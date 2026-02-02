@@ -14,7 +14,7 @@
                     "leggings",
                     "boots", "curios:spellbook"]
             },
-            "attribute": "ars_nouveau:max_mana",
+            "attribute": "manaunification:max_mana",
             "operation": "ADDITION",
             "values":
             {
