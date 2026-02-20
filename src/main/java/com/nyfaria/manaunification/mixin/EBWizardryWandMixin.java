@@ -35,7 +35,7 @@ public abstract class EBWizardryWandMixin implements IDisplayManaItem {
         int baseCost = (int) (spell.getCost() * ctx.modifiers().get(SpellModifiers.COST) + 0.1f);
         int cost = (int) (baseCost * ManaConfig.EB_WIZARDRY_MANA_COST_MULTIPLIER.get());
 
-        boolean tierCheck = spell.getTier().level <= ((WandItem)(Object)this).getTier(stack).level;
+        boolean tierCheck = spell.getTier().getLevel() <= ((WandItem)(Object)this).getTier(stack).getLevel();
         boolean cooldownCheck = WandHelper.getCurrentCooldown(stack, ctx.world().getGameTime()) == 0 || player.isCreative();
 
         return holder.getCurrentMana() >= cost && tierCheck && cooldownCheck;
