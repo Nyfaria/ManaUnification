@@ -2,10 +2,12 @@ package com.nyfaria.manaunification;
 
 import com.nyfaria.manaunification.cap.ManaAttributes;
 import com.nyfaria.manaunification.cap.ManaHolderAttacher;
+import com.nyfaria.manaunification.compat.ArsNouveauCompat;
 import com.nyfaria.manaunification.config.ManaConfig;
 import com.nyfaria.manaunification.network.NetworkHandler;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -27,6 +29,10 @@ public class ManaUnification {
         ManaHolderAttacher.register();
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ManaConfig.SPEC);
+
+        if (ModList.get().isLoaded("ars_nouveau")) {
+            ArsNouveauCompat.register();
+        }
     }
 
     @SubscribeEvent

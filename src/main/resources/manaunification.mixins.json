@@ -6,6 +6,7 @@
   "plugin": "com.nyfaria.manaunification.MixinConfigPlugin",
   "mixins": [
     "AbstractSpellMixin",
+    "ArsNouveauManaCapAccessor",
     "ArsNouveauManaCapEventsMixin",
     "ArsNouveauManaCapMixin",
     "ArsNouveauManaRegenMixin",

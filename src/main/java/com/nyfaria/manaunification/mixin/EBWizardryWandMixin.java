@@ -1,9 +1,10 @@
 package com.nyfaria.manaunification.mixin;
 
+import com.binaris.wizardry.api.content.item.*;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
-import com.binaris.wizardry.api.content.util.WandHelper;
+import com.binaris.wizardry.api.content.util.*;
 import com.binaris.wizardry.content.item.WandItem;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
@@ -36,7 +37,7 @@ public abstract class EBWizardryWandMixin implements IDisplayManaItem {
         int cost = (int) (baseCost * ManaConfig.EB_WIZARDRY_MANA_COST_MULTIPLIER.get());
 
         boolean tierCheck = spell.getTier().getLevel() <= ((WandItem)(Object)this).getTier(stack).getLevel();
-        boolean cooldownCheck = WandHelper.getCurrentCooldown(stack, ctx.world().getGameTime()) == 0 || player.isCreative();
+        boolean cooldownCheck = CastItemDataHelper.getCurrentCooldown(stack, ctx.world().getGameTime()) == 0 || player.isCreative();
 
         return holder.getCurrentMana() >= cost && tierCheck && cooldownCheck;
     }
@@ -49,7 +50,7 @@ public abstract class EBWizardryWandMixin implements IDisplayManaItem {
             int cost = (int) (baseCost * ManaConfig.EB_WIZARDRY_MANA_COST_MULTIPLIER.get());
             holder.consumeMana(cost);
 
-            WandHelper.setCurrentCooldown(stack, (int) (spell.getCooldown() * modifiers.get(EBItems.COOLDOWN_UPGRADE.get())), player.level().getGameTime());
+            CastItemDataHelper.setCurrentCooldown(stack, (int) (spell.getCooldown() * modifiers.get(SpellModifiers.COOLDOWN)), player.level().getGameTime());
         } else {
             original.call(stack, spell, player, modifiers);
         }

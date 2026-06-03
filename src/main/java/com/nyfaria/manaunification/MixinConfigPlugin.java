@@ -30,6 +30,7 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
             .put("com.nyfaria.manaunification.mixin.AttributeBonusMixin", APOTHEOSIS)
             .put("com.nyfaria.manaunification.mixin.GemMixin", APOTHEOSIS)
             .put("com.nyfaria.manaunification.mixin.ModifierInstMixin", APOTHEOSIS)
+            .put("com.nyfaria.manaunification.mixin.ArsNouveauManaCapAccessor", ARS_NOUVEAU)
             .put("com.nyfaria.manaunification.mixin.ArsNouveauManaCapMixin", ARS_NOUVEAU)
             .put("com.nyfaria.manaunification.mixin.ArsNouveauManaRegenMixin", ARS_NOUVEAU)
             .put("com.nyfaria.manaunification.mixin.ArsNouveauManaHudMixin", ARS_NOUVEAU)

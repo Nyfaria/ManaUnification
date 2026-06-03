@@ -107,7 +107,7 @@ dependencies {
     modImplementation("curse.maven:placebo-283644:5414631")
     modImplementation("curse.maven:apotheosis-313970:5317303")
     modImplementation("curse.maven:apothic-curios-950712:5352974")
-    modImplementation("curse.maven:electroblobs-wizardry-redux-1405790:7643996")
+    modImplementation("curse.maven:electroblobs-wizardry-redux-1405790:8164851")
     modImplementation("curse.maven:put-mana-in-1194625:7028850")
 }
 

@@ -1,5 +1,8 @@
 package com.nyfaria.manaunification.cap;
 
+import com.hollingsworth.arsnouveau.api.mana.IManaCap;
+import com.hollingsworth.arsnouveau.setup.config.ServerConfig;
+import com.hollingsworth.arsnouveau.setup.registry.CapabilityRegistry;
 import com.nyfaria.manaunification.api.IManaHolder;
 import com.nyfaria.manaunification.network.NetworkHandler;
 import dev._100media.capabilitysyncer.core.EntityCapability;
@@ -8,6 +11,8 @@ import dev._100media.capabilitysyncer.network.SimpleEntityCapabilityStatusPacket
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 public class ManaHolder extends EntityCapability implements IManaHolder {
@@ -51,36 +56,62 @@ public class ManaHolder extends EntityCapability implements IManaHolder {
 
     @Override
     public double getMaxMana() {
+        double value = ManaAttributes.DEFAULT_MAX_MANA;
         if (entity instanceof LivingEntity living) {
             try {
                 var attributes = living.getAttributes();
                 if (attributes != null) {
                     var attribute = attributes.getInstance(ManaAttributes.MAX_MANA.get());
                     if (attribute != null) {
-                        return attribute.getValue();
+                        value = attribute.getValue();
                     }
                 }
             } catch (Exception e) {
             }
         }
-        return ManaAttributes.DEFAULT_MAX_MANA;
+        return value + getArsNouveauMaxBonus();
     }
 
     @Override
     public double getManaRegen() {
+        double value = ManaAttributes.DEFAULT_MANA_REGEN;
         if (entity instanceof LivingEntity living) {
             try {
                 var attributes = living.getAttributes();
                 if (attributes != null) {
                     var attribute = attributes.getInstance(ManaAttributes.MANA_REGEN.get());
                     if (attribute != null) {
-                        return attribute.getValue();
+                        value = attribute.getValue();
                     }
                 }
             } catch (Exception e) {
             }
         }
-        return ManaAttributes.DEFAULT_MANA_REGEN;
+        return value + getArsNouveauRegenBonus();
+    }
+
+    private double getArsNouveauMaxBonus() {
+        if (!(entity instanceof Player player) || !ModList.get().isLoaded("ars_nouveau")) return 0;
+        try {
+            IManaCap mana = CapabilityRegistry.getMana(player).orElse(null);
+            if (mana == null) return 0;
+            return mana.getGlyphBonus() * ServerConfig.GLYPH_MAX_BONUS.get()
+                    + mana.getBookTier() * ServerConfig.TIER_MAX_BONUS.get();
+        } catch (Throwable t) {
+            return 0;
+        }
+    }
+
+    private double getArsNouveauRegenBonus() {
+        if (!(entity instanceof Player player) || !ModList.get().isLoaded("ars_nouveau")) return 0;
+        try {
+            IManaCap mana = CapabilityRegistry.getMana(player).orElse(null);
+            if (mana == null) return 0;
+            return mana.getGlyphBonus() * ServerConfig.GLYPH_REGEN_BONUS.get()
+                    + mana.getBookTier() * ServerConfig.TIER_REGEN_BONUS.get();
+        } catch (Throwable t) {
+            return 0;
+        }
     }
 
     public void tickManaRegen() {
